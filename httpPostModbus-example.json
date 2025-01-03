@@ -1,0 +1,305 @@
+[
+    {
+        "id": "1a085124e3f25c4a",
+        "type": "tab",
+        "label": "Modbus via Site test",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5fb4828b1e8a9068",
+        "type": "group",
+        "z": "1a085124e3f25c4a",
+        "name": "Just a example Modbus Server",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "a95138296b69355d"
+        ],
+        "x": 1114,
+        "y": 176.5,
+        "w": 212,
+        "h": 127
+    },
+    {
+        "id": "e0cf114e4256b51a",
+        "type": "group",
+        "z": "1a085124e3f25c4a",
+        "name": "Web endpoint  TO MODBUS   Response back to Webservice",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "6a461f43aa8ac691",
+            "abdd898c930a0cbb",
+            "880d170119f39fa5",
+            "85dff10ab25a3f22",
+            "364eacfeb0edd328"
+        ],
+        "x": 94,
+        "y": 39,
+        "w": 952,
+        "h": 122
+    },
+    {
+        "id": "82e47b09b36ca39d",
+        "type": "group",
+        "z": "1a085124e3f25c4a",
+        "name": "Just a Web request example, against the Web endpoint, using POST Method Sending JSON",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "2d966877dce90385",
+            "6053ed1379091611",
+            "36a6b8d4f9f4c1a1",
+            "cabed0b77df6a910"
+        ],
+        "x": 74,
+        "y": 379,
+        "w": 992,
+        "h": 82
+    },
+    {
+        "id": "6a461f43aa8ac691",
+        "type": "modbus-flex-getter",
+        "z": "1a085124e3f25c4a",
+        "g": "e0cf114e4256b51a",
+        "name": "",
+        "showStatusActivities": true,
+        "showErrors": true,
+        "showWarnings": true,
+        "logIOActivities": false,
+        "server": "a4c471c7d6d4af9f",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": true,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 690,
+        "y": 120,
+        "wires": [
+            [
+                "85dff10ab25a3f22"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "abdd898c930a0cbb",
+        "type": "function",
+        "z": "1a085124e3f25c4a",
+        "g": "e0cf114e4256b51a",
+        "name": "Modbus Flex Json",
+        "func": "var parameters = msg.payload;\nmsg.payload = { value: parameters.value, 'fc': parameters.fc, 'unitid': parameters.unitid, 'address': parameters.address , 'quantity': parameters.quantity } \nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "6a461f43aa8ac691"
+            ]
+        ]
+    },
+    {
+        "id": "2d966877dce90385",
+        "type": "inject",
+        "z": "1a085124e3f25c4a",
+        "g": "82e47b09b36ca39d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 420,
+        "wires": [
+            [
+                "36a6b8d4f9f4c1a1"
+            ]
+        ]
+    },
+    {
+        "id": "a95138296b69355d",
+        "type": "modbus-server",
+        "z": "1a085124e3f25c4a",
+        "g": "5fb4828b1e8a9068",
+        "name": "",
+        "logEnabled": false,
+        "hostname": "127.0.0.1",
+        "serverPort": 10502,
+        "responseDelay": 100,
+        "delayUnit": "ms",
+        "coilsBufferSize": 10000,
+        "holdingBufferSize": 10000,
+        "inputBufferSize": 10000,
+        "discreteBufferSize": 10000,
+        "showErrors": false,
+        "showStatusActivities": false,
+        "x": 1220,
+        "y": 240,
+        "wires": [
+            [],
+            [],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "880d170119f39fa5",
+        "type": "http in",
+        "z": "1a085124e3f25c4a",
+        "g": "e0cf114e4256b51a",
+        "name": "",
+        "url": "/modbusendpoint",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 220,
+        "y": 120,
+        "wires": [
+            [
+                "abdd898c930a0cbb"
+            ]
+        ]
+    },
+    {
+        "id": "85dff10ab25a3f22",
+        "type": "http response",
+        "z": "1a085124e3f25c4a",
+        "g": "e0cf114e4256b51a",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 960,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "6053ed1379091611",
+        "type": "http request",
+        "z": "1a085124e3f25c4a",
+        "g": "82e47b09b36ca39d",
+        "name": "POST Request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:1880/modbusendpoint",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 660,
+        "y": 420,
+        "wires": [
+            [
+                "cabed0b77df6a910"
+            ]
+        ]
+    },
+    {
+        "id": "36a6b8d4f9f4c1a1",
+        "type": "function",
+        "z": "1a085124e3f25c4a",
+        "g": "82e47b09b36ca39d",
+        "name": "Example payload from website",
+        "func": "// example payload from Website  : \nmsg.payload = {\n    value: 20,\n    fc: 4,\n    unitid: 2,\n    address: 1,\n    quantity: 1,\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "6053ed1379091611"
+            ]
+        ]
+    },
+    {
+        "id": "cabed0b77df6a910",
+        "type": "debug",
+        "z": "1a085124e3f25c4a",
+        "g": "82e47b09b36ca39d",
+        "name": "Answer from Modbus register",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "364eacfeb0edd328",
+        "type": "comment",
+        "z": "1a085124e3f25c4a",
+        "g": "e0cf114e4256b51a",
+        "name": "Enable Optional : Keep msg properties",
+        "info": "",
+        "x": 710,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a4c471c7d6d4af9f",
+        "type": "modbus-client",
+        "name": "test",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "10502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": true,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": true
+    }
+]
